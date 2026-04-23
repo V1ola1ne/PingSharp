@@ -33,7 +33,11 @@ else
 
 List<PingReply> replies = await p.SendPing(true);
 
-Console.WriteLine($"\nSend = {replies.Count}\tReceived = {replies.Where(x => x.Status == IPStatus.Success).Count()}\tLost = {replies.Where(x => x.Status != IPStatus.Success).Count()}");
+ReplyInfo inf = GetPrctLoss(replies);
+
+Console.WriteLine($"Ping statistics for {p.HostAddress}:");
+Console.WriteLine($"\tSend = {inf.Send}\tReceived = {inf.Received}\tLost = {inf.Lost}");
+Console.WriteLine($"\t({inf.PrctLost}% loss)");
 Console.WriteLine($"Max RTT = {replies.Max(x => x.RoundtripTime)}\tMin RTT = {replies.Min(x => x.RoundtripTime)}\tAverage RTT = {GetAverageRTT(replies)}");
 
 static long GetAverageRTT(List<PingReply> replies)
@@ -46,6 +50,30 @@ static long GetAverageRTT(List<PingReply> replies)
     }
 
     return avg / replies.Count;
+}
+
+static ReplyInfo GetPrctLoss(List<PingReply> replies)
+{
+    ReplyInfo inf = new()
+    {
+        Send = replies.Count
+    };
+
+    for (int i = 0; i < replies.Count; i++)
+    {
+        PingReply reply = replies[i];
+
+        if (reply.Status == IPStatus.Success)
+        {
+            inf.Received += 1;
+        }
+        else
+        {
+            inf.Lost += 1;
+        }
+    }
+
+    return inf;
 }
 
 

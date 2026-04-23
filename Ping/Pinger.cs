@@ -20,14 +20,14 @@ namespace Ping
         public IPAddress HostAddress { get; set; }
         public IPHostEntry? Host { get; set; }
 
-        public Pinger(string Host, int? delay = 0, int? amount = 5, bool sendInfinite = false, bool resolveIP = false, bool dontFragment = false, int? timeOut = 4000, int? length = 32)
+        public Pinger(string Host, int? delay = 0, int? amount = 5, bool sendInfinite = false, bool resolveIP = false, bool dontFragment = false, int? timeOut = 1000, int? length = 32)
         {
             Delay = delay ?? 0;
             Amount = amount ?? 5;
             SendInfinite = sendInfinite;
             ResolveIP = resolveIP;
             DontFragment = dontFragment;
-            TimeOut = timeOut ?? 4000;
+            TimeOut = timeOut ?? 1000;
             Length = length ?? 32;
 
             if (!IPAddress.IsValid(Host))
