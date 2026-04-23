@@ -13,15 +13,21 @@ namespace Ping
         private int Amount { get; set; }
         private bool SendInfinite { get; set; }
         private bool ResolveIP { get; set; }
+        private bool DontFragment { get; set; }
+        private int TimeOut { get; set; }
+        private int Length { get; set; }
         public IPAddress HostAddress { get; set; }
         public IPHostEntry? Host { get; set; }
 
-        public Pinger(string Host, int? delay = 0, int? amount = 5, bool sendInfinite = false, bool resolveIP = false)
+        public Pinger(string Host, int? delay = 0, int? amount = 5, bool sendInfinite = false, bool resolveIP = false, bool dontFragment = false, int? timeOut = 4000, int? length = 32)
         {
             Delay = delay ?? 0;
             Amount = amount ?? 5;
             SendInfinite = sendInfinite;
             ResolveIP = resolveIP;
+            DontFragment = dontFragment;
+            TimeOut = timeOut ?? 4000;
+            Length = length ?? 32;
 
             if (!IPAddress.IsValid(Host))
             {
@@ -50,27 +56,37 @@ namespace Ping
             List<PingReply> results = [];
             using System.Net.NetworkInformation.Ping p = new();
 
+            PingOptions opt = new()
+            {
+                DontFragment = DontFragment,
+            };
+
+            byte[] buffer = new byte[Length];
+
+            PopulateBuffer(buffer);
+            
+
             if (!SendInfinite)
             {
-                for (int i = 0; i < Amount; i++)
+                for (int i = 0; i < Amount; ++i)
                 {
-                    results.Add(await Send(p, Verbosity));
+                    results.Add(await Send(p, buffer, opt, Verbosity));
                 }
             }
             else
             {
                 while (SendInfinite)
                 {
-                    await Send(p, Verbosity);
+                    await Send(p, buffer, opt,Verbosity);
                 }
             }
 
             return results;
         }
 
-        private async Task<PingReply> Send(System.Net.NetworkInformation.Ping p, bool Verbosity = false)
+        private async Task<PingReply> Send(System.Net.NetworkInformation.Ping p, byte[] buffer, PingOptions opt, bool Verbosity = false)
         {
-            PingReply r = await p.SendPingAsync(HostAddress);
+            PingReply r = await p.SendPingAsync(HostAddress, TimeOut, buffer, opt);
 
             if (Verbosity)
             {
@@ -116,6 +132,14 @@ namespace Ping
                 case IPStatus.TtlExpired:
                     Console.WriteLine("TTL Expired");
                     break;
+            }
+        }
+
+        private static void PopulateBuffer(byte[] buffer)
+        {
+            for (int i = 0; i < buffer.Length; ++i)
+            {
+                buffer[i] = 100;
             }
         }
     }

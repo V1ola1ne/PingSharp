@@ -20,7 +20,7 @@ else
 
 string HostString = sb.ToString();
 
-Pinger p = new(HostString, GetDelay(args), GetAmount(args), GetSI(args), GetResolveIP(args));
+Pinger p = new(HostString, GetDelay(args), GetAmount(args), GetSI(args), GetResolveIP(args), GetFragment(args), GetTimeOut(args), GetLength(args));
 
 if (p.Host is null)
 {
@@ -73,6 +73,29 @@ static int? GetAmount(string[] args)
     if (args.Contains("n"))
     {
         return int.Parse(args[args.IndexOf("n") + 1]);
+    }
+    return null;
+}
+
+static int? GetLength(string[] args)
+{
+    if (args.Contains("l"))
+    {
+        return int.Parse(args[args.IndexOf("l") + 1]);
+    }
+    return null;
+}
+
+static bool GetFragment(string[] args)
+{
+    return args.Contains("f");
+}
+
+static int? GetTimeOut(string[] args)
+{
+    if (args.Contains("w"))
+    {
+        return int.Parse(args[args.IndexOf("w") + 1]);
     }
     return null;
 }
