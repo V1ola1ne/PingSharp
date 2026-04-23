@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Security.Cryptography;
+using System.Net.Sockets;
 
 namespace Ping
 {
@@ -31,8 +32,16 @@ namespace Ping
 
             if (!IPAddress.IsValid(Host))
             {
-                this.Host = Dns.GetHostEntry(Host);
-                HostAddress = this.Host.AddressList[RandomNumberGenerator.GetInt32(this.Host.AddressList.Length)];
+                try
+                {
+                    this.Host = Dns.GetHostEntry(Host);
+                    HostAddress = this.Host.AddressList[RandomNumberGenerator.GetInt32(this.Host.AddressList.Length)];
+                }
+                catch (SocketException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Environment.Exit(1);
+                }
             }
             else
             {

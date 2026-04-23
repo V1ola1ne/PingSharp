@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="Ping/Ping.csproj" />
+  <Project Path="Ping/Ping.csproj">
+    <BuildType Project="Release" />
+  </Project>
 </Solution>
