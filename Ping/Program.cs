@@ -40,16 +40,16 @@ Console.WriteLine($"\tSend = {inf.Send}\tReceived = {inf.Received}\tLost = {inf.
 Console.WriteLine($"\t({inf.PrctLost}% loss)");
 Console.WriteLine($"Max RTT = {replies.Max(x => x.RoundtripTime)}\tMin RTT = {replies.Min(x => x.RoundtripTime)}\tAverage RTT = {GetAverageRTT(replies)}");
 
-static long GetAverageRTT(List<PingReply> replies)
+static long GetAverageRTT(PingReply[] replies)
 {
     long avg = 0;
 
-    for (int i = 0; i < replies.Count; i++)
+    for (int i = 0; i < replies.Length; i++)
     {
         avg += replies[i].RoundtripTime;
     }
 
-    return avg / replies.Count;
+    return avg / replies.Length;
 }
 
 static ReplyInfo GetPrctLoss(PingReply[] replies)
