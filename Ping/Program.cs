@@ -31,7 +31,7 @@ else
     Console.WriteLine($"Pinging {p.HostAddress}[{p.Host?.HostName}]");
 }
 
-List<PingReply> replies = await p.SendPing(true);
+PingReply[] replies = await p.SendPing(true);
 
 ReplyInfo inf = GetPrctLoss(replies);
 
@@ -52,14 +52,14 @@ static long GetAverageRTT(List<PingReply> replies)
     return avg / replies.Count;
 }
 
-static ReplyInfo GetPrctLoss(List<PingReply> replies)
+static ReplyInfo GetPrctLoss(PingReply[] replies)
 {
     ReplyInfo inf = new()
     {
-        Send = replies.Count
+        Send = replies.Length
     };
 
-    for (int i = 0; i < replies.Count; i++)
+    for (int i = 0; i < replies.Length; i++)
     {
         PingReply reply = replies[i];
 

@@ -60,9 +60,9 @@ namespace Ping
             Host = await Dns.GetHostEntryAsync(HostAddress);
         }
 
-        public async Task<List<PingReply>> SendPing(bool Verbosity = false)
+        public async Task<PingReply[]> SendPing(bool Verbosity = false)
         {
-            List<PingReply> results = [];
+            PingReply[] results = new PingReply[Amount];
             using System.Net.NetworkInformation.Ping p = new();
 
             PingOptions opt = new()
@@ -79,7 +79,7 @@ namespace Ping
             {
                 for (int i = 0; i < Amount; ++i)
                 {
-                    results.Add(await Send(p, buffer, opt, Verbosity));
+                    results[i] = await Send(p, buffer, opt, Verbosity);
                 }
             }
             else
