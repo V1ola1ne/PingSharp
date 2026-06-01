@@ -121,16 +121,16 @@ namespace Ping
                     Console.WriteLine("Destination Host Unreachable");
                     break;
                 case IPStatus.DestinationNetworkUnreachable:
-                    Console.WriteLine("DestinationNetworkUnreachable");
+                    Console.WriteLine("Destination Network Unreachable");
                     break;
                 case IPStatus.DestinationPortUnreachable:
                     Console.WriteLine("Destination Port Unreachable");
                     break;
                 case IPStatus.BadHeader:
-                    Console.WriteLine("Bad Header");
+                    Console.WriteLine("Invalid Header");
                     break;
                 case IPStatus.BadDestination:
-                    Console.WriteLine("Bad Destination");
+                    Console.WriteLine("Invalid Destination");
                     break;
                 case IPStatus.BadOption:
                     Console.WriteLine("Invalid ICMP option");
@@ -140,6 +140,45 @@ namespace Ping
                     break;
                 case IPStatus.TtlExpired:
                     Console.WriteLine("TTL Expired");
+                    break;
+                case IPStatus.Unknown:
+                    Console.WriteLine("Unknown Failure Reason");
+                    break;
+                case IPStatus.DestinationProhibited:
+                    Console.WriteLine("Destination Prohibited");
+                    break;
+                case IPStatus.NoResources:
+                    Console.WriteLine("Insufficient Network Resources");
+                    break;
+                case IPStatus.HardwareError:
+                    Console.WriteLine("Hardware encountered an Error");
+                    break;
+                case IPStatus.PacketTooBig:
+                    Console.WriteLine("Packet too big");
+                    break;
+                case IPStatus.TtlReassemblyTimeExceeded:
+                    Console.WriteLine("TTL reassembly time exceeded");
+                    break;
+                case IPStatus.ParameterProblem:
+                    Console.WriteLine("Parameter Problem");
+                    break;
+                case IPStatus.SourceQuench:
+                    Console.WriteLine("Source Quench");
+                    break;
+                case IPStatus.DestinationUnreachable:
+                    Console.WriteLine("Destination Unreachable");
+                    break;
+                case IPStatus.TimeExceeded:
+                    Console.WriteLine("TTL Exceeded");
+                    break;
+                case IPStatus.UnrecognizedNextHeader:
+                    Console.WriteLine("Invalid Next Header field");
+                    break;
+                case IPStatus.IcmpError:
+                    Console.WriteLine("ICMP Protocol Error");
+                    break;
+                case IPStatus.DestinationScopeMismatch:
+                    Console.WriteLine("Destination Scope does not match Source Scope");
                     break;
             }
         }
